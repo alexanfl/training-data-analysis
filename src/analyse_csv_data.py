@@ -71,7 +71,13 @@ def main():
     df_all_exercises = pd.DataFrame(columns=column_names)
     df_all_exercises = df_all_exercises.assign(Date=df_all_dates)
 
-
+    df_dict = {
+            "Overhead Press": df.loc[df["Exercise Name"] == "Overhead Press (Barbell)"],
+            "Squat": df.loc[df["Exercise Name"] == "Squat (Barbell)"],
+            "Sumo Deadlift": df.loc[df["Exercise Name"] == "Sumo Deadlift (Barbell)"],
+            "Bench Press": df.loc[df["Exercise Name"] == "Bench Press (Barbell)"],
+    }
+    new_df_dict = {}
 
     for key, val in df_dict.items():
         est_1rm_by_date = get_est_1rm_by_date(val)
@@ -84,9 +90,6 @@ def main():
 
     print(df_all_exercises)
 
-
-
-
     data_columns_est_1rm = ["Est. 1 RM Squat", 
 					"Est. 1 RM Sumo Deadlift", 
 					"Est. 1 RM Overhead Press", 
@@ -97,14 +100,6 @@ def main():
 					       "Total Volume Overhead Press", 
 					       "Total Volume Bench Press"]
 
-    df_dict = {
-            "Overhead Press": df.loc[df["Exercise Name"] == "Overhead Press (Barbell)"],
-            "Squat": df.loc[df["Exercise Name"] == "Squat (Barbell)"],
-            "Sumo Deadlift": df.loc[df["Exercise Name"] == "Sumo Deadlift (Barbell)"],
-            "Bench Press": df.loc[df["Exercise Name"] == "Bench Press (Barbell)"],
-    }
-
-    new_df_dict = {}
     for key, val in df_dict.items():
         est_1rm_by_date = get_est_1rm_by_date(val)
         total_volume_by_date = get_total_volume_by_date(val)
