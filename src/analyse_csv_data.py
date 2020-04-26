@@ -17,6 +17,23 @@ MAIN_LIFTS = [
         "Sumo Deadlift (Barbell)",
         ]
 
+parser = argparse.ArgumentParser(description="")
+parser.add_argument("input_file", type=str, help="input data file")
+parser.add_argument(
+        "--print-exercises", "-p", 
+        action="store_true", 
+        help="display all exercises in dataset")
+parser.add_argument(
+        "--exercises", "-e", 
+        type=int,
+        nargs="+",
+        help="add ")
+args = parser.parse_args()
+
+data_filepath = Path(args.input_file)
+out_folder = Path("../out")
+out_folder.mkdir(exist_ok=True)
+
 
 # Use seaborn style defaults and set the default figure size
 sns.set(rc={"figure.figsize":(11, 4)})
@@ -37,23 +54,6 @@ def calculate_1rm_epley(w: float, r: int):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="")
-    parser.add_argument("input_file", type=str, help="input data file")
-    parser.add_argument(
-            "--print-exercises", "-p", 
-            action="store_true", 
-            help="display all exercises in dataset")
-    parser.add_argument(
-            "--exercises", "-e", 
-            type=int,
-            nargs="+",
-            help="display all exercises in dataset")
-    args = parser.parse_args()
-
-    data_filepath = Path(args.input_file)
-    out_folder = Path("../out")
-    out_folder.mkdir(exist_ok=True)
-
     df = pd.read_csv(data_filepath, sep=";")
     df["Date"] = pd.to_datetime(df["Date"])
     unique_exercises = list(df["Exercise Name"].value_counts().index)
@@ -95,7 +95,6 @@ def main():
         plt.savefig(
                 out_folder / f"{ex}_{data_filepath.with_suffix('.png').name}")
         plt.show()
-	
 
 if __name__ == "__main__":
     main()
