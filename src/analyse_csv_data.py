@@ -69,16 +69,17 @@ def main():
         exercises = [unique_exercises[i] for i in args.exercises]
 
     for ex in exercises:
-        df_exercise = df.loc[df["Exercise Name"] == ex]
-        df_exercise.set_index("Date", inplace=True)
-        df_exercise.loc[:, "Set Volume"] = df_exercise["Weight"]*df_exercise["Reps"]
+        df_ex = df.loc[df["Exercise Name"] == ex]
+        df_ex.set_index("Date", inplace=True)
+        df_ex.loc[:, "Set Volume"] = df_ex["Weight"]*df_ex["Reps"]
 
-        grouper1 = df_exercise.groupby("Date")
-        d1 = grouper1["Set Volume"].sum().to_frame(name="Total Volume").reset_index()
+        grouper1 = df_ex.groupby("Date")
+        d1 = grouper1["Set Volume"].sum().to_frame(
+                name="Total Volume").reset_index()
 
-        df_exercise["Est. 1 RM"] = df_exercise.apply(
+        df_ex["Est. 1 RM"] = df_ex.apply(
                 lambda x: calculate_1rm_epley(x["Weight"], x["Reps"]), axis=1)
-        grouper2 = df_exercise.groupby("Date")
+        grouper2 = df_ex.groupby("Date")
         d2 = grouper2["Est. 1 RM"].max().to_frame(
                 name="Est. 1 RM").reset_index()
 
